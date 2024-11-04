@@ -3,6 +3,7 @@ import {Upload} from '@aws-sdk/lib-storage'
 import { createReadStream,lstatSync,readdirSync } from 'fs'
 import path from 'path'
 import dotenv from 'dotenv'
+import mime from 'mime-types'
 dotenv.config()
 const s3 = new S3Client({
     region :process.env.AWSREGION,
@@ -18,7 +19,8 @@ async function uploadFile(key:string,path:string) {
         params : {
             Bucket : process.env.BUCKETNAME as string,
             Key : key,
-            Body : createReadStream(path)
+            Body : createReadStream(path),
+            ContentType : mime.lookup(path) as string
         }
     })
     

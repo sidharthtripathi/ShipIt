@@ -52,9 +52,9 @@ async function main() {
         } catch (error) {
           console.log(error);
         }
-        await uploadFolder(path.join(__dirname, "outputs", domain), domain);
-        redis.hSet(`deployments:${domain}`, { status: "deployed" });
-        await execPromise(`docker container prune -f && rm -r outputs/${domain}`);
+        await uploadFolder(path.join(__dirname, "outputs", domain,"dist"), domain);
+        await redis.hSet(`deployments:${domain}`, {url:`http://${domain}.localhost:4000`, status: "deployed"});
+        await execPromise(`docker container prune -f && rm -r ${path.join(__dirname,"outputs",domain)}`);
       } catch (error) {
         console.log(error);
       }
