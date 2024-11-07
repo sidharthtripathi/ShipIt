@@ -1,9 +1,8 @@
 "use client";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { Input } from "./input";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { formSchema } from "@/app/schema/schema";
 import { z } from "zod";
@@ -16,16 +15,20 @@ export function Form() {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors, isSubmitting },
     reset,
   } = useForm<FormType>({
     resolver: zodResolver(formSchema),
   });
+  const { fields, append } = useFieldArray({ control, name: "envs" });
   async function onSubmit(payload: FormType) {
+    console.log(payload);
+    return;
     const { data } = await axios.post("/api/deploy", payload);
     reset();
     const { trackingURL } = data;
-    setTrackingURL(trackingURL)
+    setTrackingURL(trackingURL);
   }
   return (
     <div>
@@ -47,10 +50,42 @@ export function Form() {
           </div>
           <div className="mb-4">
             <Label>Environment Variables</Label>
-            <Textarea
-              {...register("env")}
-              placeholder="paste your env file here"
-            />
+            <div className="space-y-2 mb-4">
+              {fields.map((field, index) => (
+                <div key={field.id} className="flex justify-around gap-4">
+                  <div>
+                    <Input
+                      placeholder="key"
+                      {...register(`envs.${index}.key`)}
+                    />
+                    {errors.envs?.[index]?.key && (
+                      <p className="text-sm text-destructive mt-2">
+                        {errors.envs?.[index]?.key.message}
+                      </p>
+                    )}
+                  </div>
+                  <div>
+                    <Input
+                      placeholder="value"
+                      {...register(`envs.${index}.value`)}
+                    />
+                    {errors.envs?.[index]?.value && (
+                      <p className="text-sm text-destructive mt-2">
+                        {errors.envs?.[index]?.value.message}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+            <Button
+              type="button"
+              onClick={() => {
+                append({ key: "", value: "" });
+              }}
+            >
+              Add More
+            </Button>
           </div>
           <Button type="submit" className="w-full">
             Deploy
@@ -59,8 +94,12 @@ export function Form() {
       </form>
       {trackingURL !== undefined && (
         <div className="mt-4">
-        <p className="text-bold text-sm">Check Status of deployment <Link className="text-lg underline" href={trackingURL!}>Here</Link></p>
-          
+          <p className="text-bold text-sm">
+            Check Status of deployment{" "}
+            <Link className="text-lg underline" href={trackingURL!}>
+              Here
+            </Link>
+          </p>
         </div>
       )}
     </div>
