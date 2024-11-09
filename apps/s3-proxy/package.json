@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
+    "start": "node build",
+    "build" :  "npx tsc -b"
   },
   "keywords": [],
   "author": "",
@@ -11,7 +13,6 @@
   "description": "",
   "devDependencies": {
     "@types/express": "^5.0.0",
-    "@types/http-proxy": "^1.17.15",
     "@types/mime-types": "^2.1.4",
     "typescript": "^5.6.3"
   },

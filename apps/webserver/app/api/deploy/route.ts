@@ -1,4 +1,4 @@
-import { formSchema } from "@/app/schema/schema";
+import { formSchema } from "schema";
 import { sendToQueue } from "@/lib/amqplib";
 import { NextRequest, NextResponse } from "next/server";
 import { generateSlug } from "random-word-slugs";

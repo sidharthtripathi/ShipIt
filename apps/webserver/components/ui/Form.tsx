@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "./input";
 import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { formSchema } from "@/app/schema/schema";
+import { formSchema } from "schema";
 import { z } from "zod";
 import axios from "axios";
 import { useState } from "react";

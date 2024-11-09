@@ -1,9 +1,8 @@
+import {QueueDeploymentMessageSchema } from "schema";
 import amqp from "amqplib";
-export async function sendToQueue(msg: {
-  domain: string;
-  url: string;
-  env: string;
-}) {
+import { z } from "zod";
+type DeployMessageType = z.infer<typeof QueueDeploymentMessageSchema>
+export async function sendToQueue(msg: DeployMessageType ) {
   const connection = await amqp.connect(process.env.RABBITMQ_URL!);
   const channel = await connection.createChannel();
   try {

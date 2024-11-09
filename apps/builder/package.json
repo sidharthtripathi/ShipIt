@@ -1,0 +1,27 @@
+{
+  "name": "builder",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
+    "build": "npx tsc -b",
+    "start": "node build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.688.0",
+    "@aws-sdk/lib-storage": "^3.688.0",
+    "amqplib": "^0.10.4",
+    "dotenv": "^16.4.5",
+    "redis": "^4.7.0",
+    "schema": "*",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
+  }
+}

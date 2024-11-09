@@ -1,0 +1,20 @@
+{
+  "name": "schema",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "type": "commonjs",
+  "scripts": {
+    "dev" : "npx tsc --watch",
+    "build" : "npx tsc -b"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "typescript": "^5.6.3"
+  },
+  "dependencies": {
+    "zod": "^3.23.8"
+  }
+}

@@ -16,18 +16,5 @@
   "workspaces": [
     "apps/*",
     "packages/*"
-  ],
-  "devDependencies": {
-    "@types/amqplib": "^0.10.5",
-    "typescript": "^5.6.3"
-  },
-  "dependencies": {
-    "@aws-sdk/client-s3": "^3.685.0",
-    "@aws-sdk/lib-storage": "^3.685.0",
-    "@types/mime-types": "^2.1.4",
-    "amqplib": "^0.10.4",
-    "dotenv": "^16.4.5",
-    "mime-types": "^2.1.35",
-    "redis": "^4.7.0"
-  }
+  ]
 }

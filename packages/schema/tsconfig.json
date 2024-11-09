@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "ES6",          // Target JavaScript version
+    "module": "commonjs",     // Module system for compiled code
+    "outDir": "./build",       // Output directory for compiled files
+    "strict": true,           // Enable strict type checking
+    "esModuleInterop": true,   // Improve interoperability with CommonJS
+    "declaration": true,      // Generate declaration files
+    "sourceMap": true         // Generate source maps for debugging
+  },
+  "include": [
+    "src/**/*"              // Include all TypeScript files in the src directory
+  ]
+}
