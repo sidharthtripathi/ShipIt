@@ -1,29 +1,31 @@
 import express from "express";
-import axios from "axios";
-import mime from 'mime-types'
-import dotenv from 'dotenv'
-dotenv.config()
-const server = express();
-const baseurl = process.env.BASE_URL
-server.use(async (req, res) => {
-  const subDomain = req.hostname.split(".").at(0);
-  const path = req.url;
-  if (path === "/") {
-    const response = await axios.get(
-      `${baseurl}/${subDomain}/index.html`,
-      { responseType: "stream" }
-    );
-    res.setHeader("Content-Type", "text/html");
-    response.data.pipe(res);
-  } else {
-    const response = await axios.get(
-      `${baseurl}/${subDomain}${path}`,
-      { responseType: "stream" }
-    );
-    res.setHeader("Content-Type", mime.lookup(path) as string);
-    response.data.pipe(res);
-  }
-});
-const port = process.env.PORT || 4000
-server.listen(port);
 
+import dotenv from "dotenv";
+
+import httpProxy from "http-proxy";
+dotenv.config();
+const server = express();
+const BASE_PATH = process.env.BASE_URL;
+
+const app = express();
+const PORT = 4000;
+
+const proxy = httpProxy.createProxy();
+
+app.use((req, res) => {
+  const hostname = req.hostname;
+  const subdomain = hostname.split(".")[0];
+
+  // Custom Domain - DB Query
+
+  const resolvesTo = `${BASE_PATH}/${subdomain}`;
+
+  return proxy.web(req, res, { target: resolvesTo, changeOrigin: true });
+});
+
+proxy.on("proxyReq", (proxyReq, req, res) => {
+  const url = req.url;
+  if (url === "/") proxyReq.path += "index.html";
+});
+
+app.listen(PORT, () => console.log(`Reverse Proxy Running..${PORT}`));
