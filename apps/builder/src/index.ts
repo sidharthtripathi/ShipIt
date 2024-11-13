@@ -8,8 +8,9 @@ import util from "util";
 import fs from "fs";
 import { uploadFolder } from "./s3";
 import dotenv from "dotenv";
-type MessageType = z.infer<typeof QueueDeploymentMessageSchema>
 dotenv.config();
+const backendURL = new URL(process.env.BACKEND_URL!);
+type MessageType = z.infer<typeof QueueDeploymentMessageSchema>
 const execPromise = util.promisify(exec);
 async function main() {
   const redis = createClient({ url: process.env.REDIS_URL });
@@ -58,7 +59,8 @@ async function main() {
           console.log(error);
         }
         await uploadFolder(path.join(__dirname, "outputs", domain,"dist"), domain);
-        await redis.hSet(`deployments:${domain}`, {url:`http://${domain}.localhost:4000`, status: "deployed"});
+        const new_url = backendURL.protocol.concat(`//${domain}.`).concat(backendURL.hostname)
+        await redis.hSet(`deployments:${domain}`, {url:new_url, status: "deployed"});
         await execPromise(`docker container prune -f && rm -r ${path.join(__dirname,"outputs",domain)}`);
       } catch (error) {
         console.log(error);

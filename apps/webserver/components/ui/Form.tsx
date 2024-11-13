@@ -23,8 +23,6 @@ export function Form() {
   });
   const { fields, append } = useFieldArray({ control, name: "envs" });
   async function onSubmit(payload: FormType) {
-    console.log(payload);
-    return;
     const { data } = await axios.post("/api/deploy", payload);
     reset();
     const { trackingURL } = data;
