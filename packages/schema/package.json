@@ -2,7 +2,6 @@
   "name": "schema",
   "main": "build/index.js",
   "types": "build/index.d.ts",
-  "type": "commonjs",
   "scripts": {
     "dev" : "npx tsc --watch",
     "build" : "npx tsc -b"
