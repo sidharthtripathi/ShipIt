@@ -1,6 +1,6 @@
+"use client"
 import { AlertTriangle, ChevronDown, ChevronUp, RefreshCcw } from 'lucide-react'
 import { useState } from 'react'
-
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"

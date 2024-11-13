@@ -2,7 +2,6 @@ import FailedDeployment from "@/components/FailedDeployment"
 import PendingDeployment from "@/components/PendingDeployment"
 import SuccessDeployment from "@/components/SuccessDeployment"
 import { getRedis } from "@/lib/redis"
-import Link from "next/link"
 export default async function StatusPage({params : {statusId}} : {params : {statusId : string}}){
     const redis = await getRedis()
     const status = await redis.hGetAll(`deployments:${statusId}`)
