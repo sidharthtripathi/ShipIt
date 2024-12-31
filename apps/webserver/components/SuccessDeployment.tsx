@@ -1,3 +1,4 @@
+"use client"
 import { Check, ExternalLink, Copy } from 'lucide-react'
 import Link from 'next/link'
 
