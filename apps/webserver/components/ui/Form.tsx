@@ -9,6 +9,12 @@ import { z } from "zod";
 import axios from "axios";
 import { useState } from "react";
 import Link from "next/link";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "./accordion";
 type FormType = z.infer<typeof formSchema>;
 export function Form() {
   const [trackingURL, setTrackingURL] = useState<string | undefined>(undefined);
@@ -16,9 +22,14 @@ export function Form() {
     register,
     handleSubmit,
     control,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting},
     reset,
   } = useForm<FormType>({
+    defaultValues : {
+      buildCmd : "npm run build",
+      installCmd : "npm install",
+      outputDir : "dist"
+    },
     resolver: zodResolver(formSchema),
   });
   const { fields, append } = useFieldArray({ control, name: "envs" });
@@ -28,6 +39,7 @@ export function Form() {
     const { trackingURL } = data;
     setTrackingURL(trackingURL);
   }
+  
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit)} className="mt-6">
@@ -45,6 +57,27 @@ export function Form() {
                 {errors.url.message}
               </p>
             )}
+          </div>
+          <div>
+            <Accordion type="single" collapsible className="w-full">
+              <AccordionItem value="item-1">
+                <AccordionTrigger className="hover:no-underline">Build Setting</AccordionTrigger>
+                <AccordionContent className="px-2 space-y-2">
+                  <div>
+                    <Label>Installed Command</Label>
+                    <Input {...register("installCmd")}/>
+                  </div>
+                  <div>
+                  <Label>Build Command</Label>
+                  <Input {...register("buildCmd")}/>
+                  </div>
+                  <div>
+                  <Label>Output Directory</Label>
+                  <Input {...register("outputDir")} />
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
           </div>
           <div className="mb-4">
             <Label>Environment Variables</Label>

@@ -22,9 +22,9 @@ async function main() {
     "messages",
     async (msg) => {
       try {
-        const payload = Buffer.from(msg?.content!).toString();
+        const payload = msg?.content.toString() as string
         console.log("Got msg: ", payload);
-        const { domain, url, envs } = JSON.parse(payload) as MessageType
+        const { domain, url, envs, outputDir,buildCmd,installCmd } = JSON.parse(payload) as MessageType
         let envsString = ``;
         for(let i = 0 ; i<envs.length ; i++){
           const key = envs[i].key;
@@ -37,7 +37,7 @@ async function main() {
         fs.mkdirSync(path.join(__dirname, "outputs", domain));
         try {
           await execPromise(
-            `docker run --name=${domain} -e GITHUB_URL=${url} ${envsString} react-builder:latest`
+            `docker run --name=${domain} -e GITHUB_URL=${url} -e "BUILD_CMD=${buildCmd}" -e "INSTALL_CMD=${installCmd}" ${envsString} react-builder:latest`
           );
         } catch (error) {
           console.error("Docker Error: ", error);
@@ -49,7 +49,7 @@ async function main() {
 
         try {
           await execPromise(
-            `docker cp ${domain}:/react-builder/repo/dist ${path.join(
+            `docker cp ${domain}:/react-builder/repo/${outputDir} ${path.join(
               __dirname,
               "outputs",
               domain
@@ -58,7 +58,7 @@ async function main() {
         } catch (error) {
           console.log(error);
         }
-        await uploadFolder(path.join(__dirname, "outputs", domain,"dist"), domain);
+        await uploadFolder(path.join(__dirname, "outputs", domain,outputDir), domain);
         const new_url = backendURL.protocol.concat(`//${domain}.`).concat(backendURL.hostname)
         await redis.hSet(`deployments:${domain}`, {url:new_url, status: "deployed"});
         await execPromise(`docker container prune -f && rm -r ${path.join(__dirname,"outputs",domain)}`);
