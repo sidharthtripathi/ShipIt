@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 import httpProxy from "http-proxy";
 dotenv.config();
 const server = express();
-const BASE_PATH = process.env.BASE_URL;
+const BASE_PATH = process.env.S3_BASE_URL;
 
 const app = express();
 const PORT = 4000;
