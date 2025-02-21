@@ -1,13 +1,10 @@
 // app/api/sse/route.js
+import { getRedis } from "@/lib/redis";
 import { NextRequest } from "next/server";
-import { createClient,commandOptions } from 'redis';
-const client = createClient({
-    url : process.env.REDIS_URL
-});
-  
+import { commandOptions } from 'redis';
 
 export async function GET(request : NextRequest,{params} : {params : {id : string}}) {
-    await client.connect();
+    const client = await getRedis()
     const {id} = params
     const encoder = new TextEncoder();
     let lastId = '0'

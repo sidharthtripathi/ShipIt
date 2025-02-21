@@ -1,4 +1,4 @@
-"use client"
+
 import { Check, ExternalLink, Copy } from 'lucide-react'
 import Link from 'next/link'
 
@@ -6,10 +6,12 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 
-export default function SuccessDeployment({ projectId, deploymentUrl}: { projectId: string, deploymentUrl: string }) {
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(deploymentUrl)
-  }
+
+export default  function SuccessDeployment({ projectId}: { projectId: string}) {
+  const backendURL = new URL("http://localhost:4000")
+  const deploymentUrl = backendURL.protocol
+  .concat(`//${projectId}.`)
+  .concat(backendURL.hostname);
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -28,13 +30,6 @@ export default function SuccessDeployment({ projectId, deploymentUrl}: { project
               Your deployment was successful and your project is now accessible at the URL below.
             </AlertDescription>
           </Alert>
-          <div className="bg-muted p-4 rounded-md flex items-center justify-between">
-            <code className="text-sm font-mono break-all">{deploymentUrl}</code>
-            <Button variant="outline" size="icon" onClick={copyToClipboard} title="Copy URL">
-              <Copy className="h-4 w-4" />
-              <span className="sr-only">Copy URL</span>
-            </Button>
-          </div>
         </CardContent>
         <CardFooter className="flex justify-end space-x-2">
           <Button asChild>

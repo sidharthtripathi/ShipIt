@@ -10,7 +10,6 @@ import { uploadFolder } from "./s3";
 import dotenv from "dotenv";
 const execPromise = util.promisify(exec);
 dotenv.config();
-const backendURL = new URL(process.env.BACKEND_URL!);
 type MessageType = z.infer<typeof QueueDeploymentMessageSchema>;
 async function main() {
   const redis = createClient({ url: process.env.REDIS_URL });
@@ -95,11 +94,12 @@ async function main() {
               path.join(__dirname, "outputs", domain, outputDir),
               domain
             );
-            const new_url = backendURL.protocol
-              .concat(`//${domain}.`)
-              .concat(backendURL.hostname);
+            
+            await redis.xAdd(`logs:${domain}`, "*", {
+                log: "Deployed",
+                type: "log",
+            });
             await redis.hSet(`deployments:${domain}`, {
-              url: new_url,
               status: "deployed",
             });
             await execPromise(
