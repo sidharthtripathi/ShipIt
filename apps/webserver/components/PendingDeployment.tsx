@@ -1,3 +1,4 @@
+"use client"
 import {
   Card,
   CardDescription,
@@ -8,11 +9,28 @@ import {
 import {} from "@/components/ui/alert-dialog";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle, Loader2, RefreshCw } from "lucide-react";
+import { useEffect } from "react";
 export default function PendingDeployment({
   projectId,
 }: {
   projectId: string;
 }) {
+
+  useEffect(()=>{
+    const eventSource = new EventSource(`/api/deploy/${projectId}`);
+    eventSource.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      console.log("New event:",data);
+    };
+
+    eventSource.onerror = (error) => {
+      console.error("EventSource error:", error);
+      eventSource.close();
+    };
+    return () => {
+      eventSource.close();
+    };
+  })
   return (
     <div className="container mx-auto px-4 py-8">
       <Card className="max-w-2xl mx-auto">
