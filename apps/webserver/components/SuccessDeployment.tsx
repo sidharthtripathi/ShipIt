@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 
 
 export default  function SuccessDeployment({ projectId}: { projectId: string}) {
-  const backendURL = new URL(process.env.BACKEND_URL!)
+  const backendURL = new URL("https://sidharth.cloud")
   const deploymentUrl = backendURL.protocol
   .concat(`//${projectId}.`)
   .concat(backendURL.hostname);

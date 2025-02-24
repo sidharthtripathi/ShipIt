@@ -8,11 +8,11 @@ export declare const formSchema: z.ZodObject<{
         key: z.ZodString;
         value: z.ZodString;
     }, "strip", z.ZodTypeAny, {
-        value: string;
         key: string;
+        value: string;
     }, {
-        value: string;
         key: string;
+        value: string;
     }>, "many">;
 }, "strip", z.ZodTypeAny, {
     url: string;
@@ -20,8 +20,8 @@ export declare const formSchema: z.ZodObject<{
     buildCmd: string;
     installCmd: string;
     envs: {
-        value: string;
         key: string;
+        value: string;
     }[];
 }, {
     url: string;
@@ -29,8 +29,8 @@ export declare const formSchema: z.ZodObject<{
     buildCmd: string;
     installCmd: string;
     envs: {
-        value: string;
         key: string;
+        value: string;
     }[];
 }>;
 export declare const QueueDeploymentMessageSchema: z.ZodObject<z.objectUtil.extendShape<{
@@ -42,11 +42,11 @@ export declare const QueueDeploymentMessageSchema: z.ZodObject<z.objectUtil.exte
         key: z.ZodString;
         value: z.ZodString;
     }, "strip", z.ZodTypeAny, {
-        value: string;
         key: string;
+        value: string;
     }, {
-        value: string;
         key: string;
+        value: string;
     }>, "many">;
 }, {
     domain: z.ZodString;
@@ -56,8 +56,8 @@ export declare const QueueDeploymentMessageSchema: z.ZodObject<z.objectUtil.exte
     buildCmd: string;
     installCmd: string;
     envs: {
-        value: string;
         key: string;
+        value: string;
     }[];
     domain: string;
 }, {
@@ -66,8 +66,8 @@ export declare const QueueDeploymentMessageSchema: z.ZodObject<z.objectUtil.exte
     buildCmd: string;
     installCmd: string;
     envs: {
-        value: string;
         key: string;
+        value: string;
     }[];
     domain: string;
 }>;
