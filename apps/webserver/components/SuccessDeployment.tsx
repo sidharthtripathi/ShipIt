@@ -1,5 +1,5 @@
 
-import { Check, ExternalLink, Copy } from 'lucide-react'
+import { Check, ExternalLink } from 'lucide-react'
 import Link from 'next/link'
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 
 
 export default  function SuccessDeployment({ projectId}: { projectId: string}) {
-  const backendURL = new URL("http://localhost:4000")
+  const backendURL = new URL(process.env.BACKEND_URL!)
   const deploymentUrl = backendURL.protocol
   .concat(`//${projectId}.`)
   .concat(backendURL.hostname);

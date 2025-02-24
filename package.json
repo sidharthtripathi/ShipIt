@@ -1,17 +1,13 @@
 {
-  "name": "turborepo-empty-starter",
+  "name": "netlify-clone",
   "version": "1.0.0",
   "private": true,
-  "description": "An empty Turborepo starter",
-  "main": "index.js",
+  "description": "netlify clone to deploy static websites",
   "scripts": {
     "build": "turbo build",
     "lint": "turbo lint",
     "dev": "turbo dev"
   },
-  "keywords": [],
-  "author": "tknickman",
-  "license": "ISC",
   "packageManager": "npm@10.8.1",
   "workspaces": [
     "apps/*",

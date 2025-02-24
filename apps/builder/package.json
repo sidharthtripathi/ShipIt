@@ -3,13 +3,9 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
-    "build": "npx tsc -b",
+    "build": "npx tsc",
     "start": "node build"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
   "dependencies": {
     "@aws-sdk/client-s3": "^3.688.0",
     "@aws-sdk/lib-storage": "^3.688.0",
