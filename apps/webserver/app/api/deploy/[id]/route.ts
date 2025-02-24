@@ -1,4 +1,6 @@
 // app/api/sse/route.js
+export const maxDuration = 60;
+export const dynamic = 'force-dynamic'
 import { getRedis } from "@/lib/redis";
 import { NextRequest } from "next/server";
 import { commandOptions } from 'redis';
