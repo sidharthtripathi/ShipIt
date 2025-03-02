@@ -26,6 +26,7 @@ export function Form() {
     reset,
   } = useForm<FormType>({
     defaultValues : {
+      url :"https://github.com/sidharthtripathi/react-demo",
       buildCmd : "npm run build",
       installCmd : "npm install",
       outputDir : "dist"
