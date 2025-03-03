@@ -6,7 +6,8 @@
   "scripts": {
     "build": "turbo build",
     "lint": "turbo lint",
-    "dev": "turbo dev"
+    "dev": "turbo dev",
+    "build:container" : "npx turbo run build --filter=react-builder-container"
   },
   "packageManager": "npm@10.8.1",
   "workspaces": [
