@@ -15,7 +15,7 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Netlify",
+  title: "ShipIt",
   description: "Deploy React application in single click",
 };
 
