@@ -115,6 +115,7 @@ export function Form() {
               onClick={() => {
                 append({ key: "", value: "" });
               }}
+              variant={"secondary"}
             >
               Add More
             </Button>
