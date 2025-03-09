@@ -1,7 +1,8 @@
 "use client";
+
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Input } from "./input";
+import { Input } from "@/components/ui/input";
 import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { formSchema } from "schema";
@@ -14,127 +15,222 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "./accordion";
+} from "@/components/ui/accordion";
+import { GithubIcon as GitHubLogoIcon, PlusIcon, RocketIcon, TrashIcon, Cog, KeyRound } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+
 type FormType = z.infer<typeof formSchema>;
+
 export function Form() {
   const [trackingURL, setTrackingURL] = useState<string | undefined>(undefined);
   const {
     register,
     handleSubmit,
     control,
-    formState: { errors, isSubmitting},
+    formState: { errors, isSubmitting },
     reset,
   } = useForm<FormType>({
-    defaultValues : {
-      url :"https://github.com/sidharthtripathi/react-demo",
-      buildCmd : "npm run build",
-      installCmd : "npm install",
-      outputDir : "dist"
+    defaultValues: {
+      url: "https://github.com/sidharthtripathi/react-demo",
+      buildCmd: "npm run build",
+      installCmd: "npm install",
+      outputDir: "dist"
     },
     resolver: zodResolver(formSchema),
   });
-  const { fields, append } = useFieldArray({ control, name: "envs" });
+
+  const { fields, append, remove } = useFieldArray({ control, name: "envs" });
+
   async function onSubmit(payload: FormType) {
     const { data } = await axios.post("/api/deploy", payload);
     reset();
     const { trackingURL } = data;
     setTrackingURL(trackingURL);
   }
-  
+
   return (
-    <div>
-      <form onSubmit={handleSubmit(onSubmit)} className="mt-6">
-        <fieldset disabled={isSubmitting}>
-          <div className="mb-4">
-            <Label htmlFor="repo-url">GitHub Repository URL</Label>
+    <div className="mt-8">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+        <fieldset disabled={isSubmitting} className="space-y-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="space-y-2"
+          >
+            <Label htmlFor="repo-url" className="text-foreground">
+              <div className="flex items-center gap-2">
+                <GitHubLogoIcon className="w-4 h-4" />
+                GitHub Repository URL
+              </div>
+            </Label>
             <Input
               {...register("url")}
               id="repo-url"
               type="url"
               placeholder="https://github.com/username/repository"
+              className="transition-all duration-200 focus:scale-[1.01] bg-background/50 backdrop-blur-sm"
             />
             {errors.url && (
               <p className="text-destructive text-sm mt-2">
                 {errors.url.message}
               </p>
             )}
-          </div>
-          <div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+          >
             <Accordion type="single" collapsible className="w-full">
-              <AccordionItem value="item-1">
-                <AccordionTrigger className="hover:no-underline">Build Setting</AccordionTrigger>
-                <AccordionContent className="px-2 space-y-2">
-                  <div>
-                    <Label>Installed Command</Label>
-                    <Input {...register("installCmd")}/>
+              <AccordionItem value="item-1" className="border border-border/50 rounded-lg bg-background/50 backdrop-blur-sm">
+                <AccordionTrigger className="hover:no-underline px-4 py-2">
+                  <span className="flex items-center gap-2">
+                    <Cog className="w-4 h-4" />
+                    Build Settings
+                  </span>
+                </AccordionTrigger>
+                <AccordionContent className="px-4 space-y-4">
+                  <div className="space-y-2">
+                    <Label>Install Command</Label>
+                    <Input
+                      {...register("installCmd")}
+                      className="bg-background/50"
+                    />
                   </div>
-                  <div>
-                  <Label>Build Command</Label>
-                  <Input {...register("buildCmd")}/>
+                  <div className="space-y-2">
+                    <Label>Build Command</Label>
+                    <Input
+                      {...register("buildCmd")}
+                      className="bg-background/50"
+                    />
                   </div>
-                  <div>
-                  <Label>Output Directory</Label>
-                  <Input {...register("outputDir")} />
+                  <div className="space-y-2">
+                    <Label>Output Directory</Label>
+                    <Input
+                      {...register("outputDir")}
+                      className="bg-background/50"
+                    />
                   </div>
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
-          </div>
-          <div className="mb-4">
-            <Label>Environment Variables</Label>
-            <div className="space-y-2 mb-4">
-              {fields.map((field, index) => (
-                <div key={field.id} className="flex justify-around gap-4">
-                  <div>
-                    <Input
-                      placeholder="key"
-                      {...register(`envs.${index}.key`)}
-                    />
-                    {errors.envs?.[index]?.key && (
-                      <p className="text-sm text-destructive mt-2">
-                        {errors.envs?.[index]?.key.message}
-                      </p>
-                    )}
-                  </div>
-                  <div>
-                    <Input
-                      placeholder="value"
-                      {...register(`envs.${index}.value`)}
-                    />
-                    {errors.envs?.[index]?.value && (
-                      <p className="text-sm text-destructive mt-2">
-                        {errors.envs?.[index]?.value.message}
-                      </p>
-                    )}
-                  </div>
-                </div>
-              ))}
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="space-y-4"
+          >
+            <Label className="text-foreground flex items-center gap-2">
+              <KeyRound className="w-4 h-4" />
+              Environment Variables
+            </Label>
+            <div className="space-y-4">
+              <AnimatePresence>
+                {fields.map((field, index) => (
+                  <motion.div
+                    key={field.id}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 20 }}
+                    className="flex items-center gap-4"
+                  >
+                    <div className="flex-1">
+                      <Input
+                        placeholder="Key"
+                        {...register(`envs.${index}.key`)}
+                        className="bg-background/50 backdrop-blur-sm"
+                      />
+                      {errors.envs?.[index]?.key && (
+                        <p className="text-sm text-destructive mt-2">
+                          {errors.envs?.[index]?.key?.message}
+                        </p>
+                      )}
+                    </div>
+                    <div className="flex-1">
+                      <Input
+                        placeholder="Value"
+                        {...register(`envs.${index}.value`)}
+                        className="bg-background/50 backdrop-blur-sm"
+                      />
+                      {errors.envs?.[index]?.value && (
+                        <p className="text-sm text-destructive mt-2">
+                          {errors.envs?.[index]?.value?.message}
+                        </p>
+                      )}
+                    </div>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      className="self-start hover:text-destructive"
+                      onClick={() => remove(index)}
+                    >
+                      <TrashIcon className="w-4 h-4" />
+                    </Button>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
             </div>
             <Button
               type="button"
-              onClick={() => {
-                append({ key: "", value: "" });
-              }}
-              variant={"secondary"}
+              onClick={() => append({ key: "", value: "" })}
+              variant="outline"
+              className="w-full bg-background/50 backdrop-blur-sm"
             >
-              Add More
+              <PlusIcon className="w-4 h-4 mr-2" />
+              Add Environment Variable
             </Button>
-          </div>
-          <Button type="submit" className="w-full">
-            Deploy
-          </Button>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
+            <Button
+              type="submit"
+              className="w-full bg-primary hover:bg-primary/90 transition-all duration-200"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? (
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+                  Deploying...
+                </div>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <RocketIcon className="w-4 h-4" />
+                  Deploy Project
+                </div>
+              )}
+            </Button>
+          </motion.div>
         </fieldset>
       </form>
-      {trackingURL !== undefined && (
-        <div className="mt-4">
-          <p className="text-bold text-sm">
-            Check Status of deployment{" "}
-            <Link className="text-lg underline" href={trackingURL!}>
-              Here
-            </Link>
-          </p>
-        </div>
-      )}
+
+      <AnimatePresence>
+        {trackingURL && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="mt-6 p-4 bg-background/50 backdrop-blur-sm rounded-lg border border-border/50"
+          >
+            <p className="text-sm text-foreground">
+              Check deployment status{" "}
+              <Link 
+                href={trackingURL}
+                className="text-primary hover:text-primary/80 font-medium underline underline-offset-4"
+              >
+                here
+              </Link>
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
