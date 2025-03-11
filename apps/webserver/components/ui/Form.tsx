@@ -2,6 +2,8 @@
 
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+
 import { Input } from "@/components/ui/input";
 import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,7 +18,15 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { GithubIcon as GitHubLogoIcon, PlusIcon, RocketIcon, TrashIcon, Cog, KeyRound } from "lucide-react";
+import {
+  GithubIcon as GitHubLogoIcon,
+  PlusIcon,
+  RocketIcon,
+  TrashIcon,
+  Cog,
+  KeyRound,
+  Terminal,
+} from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 type FormType = z.infer<typeof formSchema>;
@@ -34,7 +44,7 @@ export function Form() {
       url: "https://github.com/sidharthtripathi/react-demo",
       buildCmd: "npm run build",
       installCmd: "npm install",
-      outputDir: "dist"
+      outputDir: "dist",
     },
     resolver: zodResolver(formSchema),
   });
@@ -83,7 +93,10 @@ export function Form() {
             transition={{ delay: 0.1 }}
           >
             <Accordion type="single" collapsible className="w-full">
-              <AccordionItem value="item-1" className="border border-border/50 rounded-lg bg-background/50 backdrop-blur-sm">
+              <AccordionItem
+                value="item-1"
+                className="border border-border/50 rounded-lg bg-background/50 backdrop-blur-sm"
+              >
                 <AccordionTrigger className="hover:no-underline px-4 py-2">
                   <span className="flex items-center gap-2">
                     <Cog className="w-4 h-4" />
@@ -207,6 +220,13 @@ export function Form() {
                 </div>
               )}
             </Button>
+            <Alert className="mt-2">
+              <Terminal className="h-4 w-4" />
+              <AlertTitle>Demo Repository is provided</AlertTitle>
+              <AlertDescription>
+                You can use your own Repository as well
+              </AlertDescription>
+            </Alert>
           </motion.div>
         </fieldset>
       </form>
@@ -221,7 +241,7 @@ export function Form() {
           >
             <p className="text-sm text-foreground">
               Check deployment status{" "}
-              <Link 
+              <Link
                 href={trackingURL}
                 className="text-primary hover:text-primary/80 font-medium underline underline-offset-4"
               >
